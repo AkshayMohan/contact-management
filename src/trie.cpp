@@ -1,3 +1,6 @@
+#ifdef _DEBUG_MODE_
+	#include <iostream>
+#endif
 #include <unordered_map>
 
 struct Node {
@@ -29,15 +32,44 @@ class Trie {
 			temp->end_of_word = true;
 			return temp;
 		}
-		Node* search(std::string key) {
+		Node* search(Node *root, std::string key, bool *res) {
 
-			Node *temp = this->root;
+			Node *temp = root;
 			for(char c : key) {
 
-				if(temp->children.find(c) == temp->children.end())
+				if(temp->children.find(c) == temp->children.end()) {
+
+					*res = false;
 					return nullptr;
+				}
 				temp = temp->children[c];
 			}
-			return (temp->end_of_word) ? temp : nullptr;
+			*res = (temp->end_of_word) ? true : false;
+			return temp;
 		}
+		Node* search(std::string key) {
+
+			bool res;
+			return search(this->root, key, &res);
+		}
+		#ifdef _DEBUG_MODE_
+			void display(Node *root, char *buffer, int idx) {
+
+				if(root->end_of_word) {
+
+					buffer[idx] = '\0';
+					std::cout << buffer << std::endl;
+				}
+				for(auto i : root->children) {
+
+					buffer[idx] = i.first;
+					display(i.second, buffer, idx + 1);
+				}
+			}
+			void display() {
+
+				char buffer[32];
+				display(this->root, buffer, 0);
+			}
+		#endif
 };
