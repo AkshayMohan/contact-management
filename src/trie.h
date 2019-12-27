@@ -1,7 +1,7 @@
 /*____________________________________________________________________________________
 
 	Contact Management System
-	trie.cpp - Trie data structure class definition file.
+	trie.h - Header file for Trie data structure class.
 
 	- Akshay Mohan
 
@@ -30,64 +30,34 @@
 	SOFTWARE.
 ____________________________________________________________________________________*/
 
-#include "trie.h"
+#ifndef __TRIE_INCLUDED_
+#define __TRIE_INCLUDED_
 
-Trie::Trie() {
-
-	this->root = new Node();
-}
-
-Node* Trie::insert(std::string key) {
-
-	Node *temp = this->root;
-	for(auto c : key) {
-
-		if(temp->children.find(c) == temp->children.end())
-			temp->children[c] = new Node();
-		
-		temp = temp->children[c];
-	}
-	temp->end_of_word = true;
-	return temp;
-}
-
-Node* Trie::search(Node *root, std::string key, bool *result) {
-
-	for(auto c : key) {
-
-		if(root->children.find(c) == root->children.end()) {
-
-			*result = false;
-			return nullptr;
-		}
-		root = root->children[c];
-	}
-	*result = (root->end_of_word) ? true : false;
-	return root;
-}
-
-Node* Trie::search(std::string key, bool *result) {
-
-	return search(this->root, key, result);
-}
-
+#include <unordered_map>
 #ifdef _TRIE_DEBUG_MODE_
-	void Trie::display(Node *root, char *buffer, unsigned int idx) {
+	#include <iostream>
+#endif
 
-		if(root->end_of_word) {
+struct Node {
 
-			buffer[idx] = '\0';
-			std::cout << buffer << std::endl;
-		}
-		for(auto i : root->children) {
+	std::unordered_map<char, Node*> children;
+	bool end_of_word = false;
+};
 
-			buffer[idx] = i.first;
-			display(i.second, buffer, idx + 1);
-		}
-	}
-	void Trie::display() {
+class Trie {
 
-		char buffer[32];
-		display(this->root, buffer, 0);
-	}
+	private:
+		Node *root;
+
+	public:
+		Trie();
+		
+		Node* insert(std::string key);
+		Node* search(Node *root, std::string key, bool *result);
+		Node* search(std::string key, bool *result);
+		#ifdef _TRIE_DEBUG_MODE_
+			void display(Node *root, char *buffer, unsigned int idx);
+			void display();
+		#endif
+};
 #endif
