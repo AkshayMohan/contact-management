@@ -71,6 +71,13 @@ Node* Trie::search(std::string key, bool *result) {
 	return search(this->root, key, result);
 }
 
+bool Trie::exists(std::string key) {
+
+	bool result;
+	search(this->root, key, &result);
+	return result;
+}
+
 #ifdef _TRIE_DEBUG_MODE_
 	void Trie::display(Node *root, char *buffer, unsigned int idx) {
 
