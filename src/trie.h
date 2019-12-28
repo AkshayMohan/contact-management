@@ -55,6 +55,7 @@ class Trie {
 		Node* insert(std::string key);
 		Node* search(Node *root, std::string key, bool *result);
 		Node* search(std::string key, bool *result);
+		bool exists(std::string key);
 		#ifdef _TRIE_DEBUG_MODE_
 			void display(Node *root, char *buffer, unsigned int idx);
 			void display();
