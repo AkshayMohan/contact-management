@@ -33,14 +33,14 @@ ________________________________________________________________________________
 #ifndef __TRIE_INCLUDED_
 #define __TRIE_INCLUDED_
 
-#include <unordered_map>
+#include <map>
 #ifdef _TRIE_DEBUG_MODE_
 	#include <iostream>
 #endif
 
 struct Node {
 
-	std::unordered_map<char, Node*> children;
+	std::map<char, Node*> children;
 	bool end_of_word = false;
 };
 
