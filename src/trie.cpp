@@ -78,6 +78,32 @@ bool Trie::exists(std::string key) {
 	return result;
 }
 
+bool Trie::remove(Node *root, char *key) {
+
+	if(root == nullptr)
+		return false;
+
+	if(*key == '\0') {
+
+		if(!root->end_of_word)
+			return false;
+		else
+			root->end_of_word = false;
+	} else {
+
+		if((root->children.find(*key) == root->children.end()) || !remove(root->children[*key], key + 1))
+			return false;
+	}
+	if(root->children.empty())
+		delete root;
+	return true;
+}
+
+bool Trie::remove(char *key) {
+
+	return remove(this->root, key);
+}
+
 #ifdef _TRIE_DEBUG_MODE_
 	void Trie::display(Node *root, char *buffer, unsigned int idx) {
 
