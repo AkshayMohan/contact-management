@@ -65,30 +65,63 @@ int main() {
 	Trie contacts;
 	std::string name;
 	Node *temp;
+	int option;
 	bool result;
 	char buffer[32];
 
 	for(const std::string &str : contact_names)
 		contacts.insert(str);
-
-	std::cout << "Listing contacts : " << std::endl;
-	contacts.display();
-
+	
 	while(true) {
+		
+		std::cout << "1. List all\n2. Search\n3. Delete\n4. Exit\nChoose an operation : ";
+		std::cin >> option;
 
-		std::cout << "Enter a name phrase : ";
-		std::cin >> name;
-		std::cout << std::endl;
-		if((temp = contacts.search(name, &result)) != nullptr) { //temp is now the point up to the searched phrase, if successful.
+		switch(option) {
 
-			if(result)
-				std::cout << "Found!" << std::endl;
-			
-			strcpy_s(buffer, name.c_str()); //search phrase has to be printed along with the contents of buffer from display functions.
-			contacts.display(temp, buffer, name.length());
-		} else {
+			case 1: {
 
-			std::cout << "Given phrase not found!" << std::endl;
+				contacts.display();
+				break;
+			}
+			case 2: {
+
+				std::cout << "Enter a name phrase : ";
+				std::cin >> name;
+				std::cout << std::endl;
+				if((temp = contacts.search(name, &result)) != nullptr) { //temp is now the point up to the searched phrase, if successful.
+
+					if(result)
+						std::cout << "Found!" << std::endl;
+					
+					strcpy_s(buffer, name.c_str()); //search phrase has to be printed along with the contents of buffer from display functions.
+					contacts.display(temp, buffer, name.length());
+				} else {
+
+					std::cout << "Given phrase not found!" << std::endl;
+				}
+				break;
+			}
+			case 3: {
+
+				std::cout << "Enter a name : ";
+				std::cin >> name;
+
+				if(contacts.remove((char *)name.c_str()))
+					std::cout << "Contact deleted!" << std::endl;
+				else
+					std::cout << "Failed deleting contact. (It doesn't exist)" << std::endl;
+				break;
+			}
+			case 4: {
+
+				std::cout << "Exiting.." << std::endl;
+				return 0;
+			}
+			default: {
+
+				std::cout << "Invalid option!" << std::endl;
+			}
 		}
 	}
 	return 0;
